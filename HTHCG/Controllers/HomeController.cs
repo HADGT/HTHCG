@@ -2,6 +2,7 @@ using HTHCG.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net;
 
 namespace HTHCG.Controllers
 {
@@ -23,6 +24,8 @@ namespace HTHCG.Controllers
 
         public IActionResult ListDis()
         {
+            List<Disease> diseases = HCGctx.Diseases.ToList();
+            ViewBag.Dis = diseases;
             return View();
         }
 
