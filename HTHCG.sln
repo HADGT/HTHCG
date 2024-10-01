@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HTHCG", "HTHCG\HTHCG.csproj", "{7FC629F6-3EC6-49D7-AD09-80CF81A8FBF6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7FC629F6-3EC6-49D7-AD09-80CF81A8FBF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FC629F6-3EC6-49D7-AD09-80CF81A8FBF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FC629F6-3EC6-49D7-AD09-80CF81A8FBF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FC629F6-3EC6-49D7-AD09-80CF81A8FBF6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {07419B26-9863-418E-96C8-7DEC3AEF432D}
+	EndGlobalSection
+EndGlobal

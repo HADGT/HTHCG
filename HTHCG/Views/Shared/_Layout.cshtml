@@ -1,0 +1,66 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <title>Chuẩn đoán bệnh</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css' />
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+    <link href="~/css/style.css" rel="stylesheet" />
+
+</head>
+<body>
+    <div class="page">
+        <nav id="colorlib-main-nav" role="navigation">
+            <div class="js-fullheight colorlib-table">
+                <div class="img" style="background-image: url(images/bg_3.jpg);"></div>
+                <div class="colorlib-table-cell js-fullheight">
+                    <div class="row no-gutters">
+                        <div class="col-md-12 text-center">
+                            <ul>
+                                <li class="active"><a asp-controller="Home" asp-action="Index"><span>Trang chủ</span></a></li>
+                                <li><a asp-controller="Home" asp-action="ListSys"><span>Danh sách triệu chứng bệnh</span></a></li>
+                                <li><a><span>Danh sách bệnh</span></a></li>
+                                <li><a><span>Chuẩn đoán bệnh</span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div id="colorlib-page">
+            <header>
+                <div class="container">
+                    <a href="#" class="js-colorlib-nav-toggle colorlib-nav-toggle"><i></i></a>
+                </div>
+            </header>
+
+            <section class="hero-wrap js-fullheight">
+                <div class="container px-0">
+                    <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center" data-scrollax-parent="true">
+                        <div class="col-md-12 ftco-animate text-center">
+                            <div class="desc">
+                                <main role="main" class="pb-3">
+                                    @RenderBody()
+                                </main>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/popper.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/main.js"></script>
+
+</body>
+</html>
+
