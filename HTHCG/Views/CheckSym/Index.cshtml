@@ -1,0 +1,91 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Symptoms"] = ViewBag.Symptoms;
+    ViewData["IdCha"] = ViewBag.idcha;
+}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<h2 class="text-white">Tra cứu danh sách triệu chứng</h2>
+<div class="col-12 p-0 d-flex">
+    <div class="d-flex col-6 p-0">
+        <ul class="nav nav-tabs">
+            <li><a class="text-white" type="button" asp-controller="CheckSym" asp-action="Index">Triệu chứng</a></li>
+            <li><a class="text-white" type="button" asp-controller="CheckDis" asp-action="Index">Bệnh</a></li>
+        </ul>
+    </div>
+    <div class="col-6 d-flex justify-content-end align-items-center p-0">
+        <form class="d-flex" asp-action="SysSearch" asp-controller="CheckSym" method="get">
+            <input class="form-control" type="search" name="Name" placeholder="Tìm kiếm tên" aria-label="Search">
+            <button class="btn btn-outline-light m-auto" type="submit">Tìm kiếm</button>
+        </form>
+        <form asp-action="" asp-controller="" method="get">
+            <button class="btn btn-outline-light m-auto" type="submit">Tạo mới</button>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div id="data-container1" class="pt-3 col-6 alert-heading text-monospace text-left" style="max-height: calc(100vh - 150px); overflow-y: auto;">
+        <table class="table table-bordered text-white">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th class=" text-center">Triệu chứng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (ViewBag.Sys != null)
+                {
+                    @foreach (var symptom in ViewBag.Sys)
+                    {
+                        <tr>
+                            <td class="text-center" style="width: 5rem">
+                                <div class="m-auto" style="align-items: center; justify-content: center;">
+                                    <input class="form-check-input" type="radio" name="disease" id="disease1" value="@symptom.IdSym" style="margin-right: 5px;" onchange="redirectToView('@symptom.IdSym');">
+                                </div>
+                            </td>
+                            <td>
+                                @symptom.NameSym
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="2" class="text-center">Dữ liệu trống</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div id="data-container2" class="pt-3 col-6 alert-heading text-monospace text-left" style="max-height: calc(100vh - 150px); overflow-y: auto;">
+        @Html.Partial("Details", ViewData)
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    // Hàm điều hướng đến chi tiết triệu chứng hoặc bệnh
+    function redirectToView(id) {
+        // Gọi hàm loadSymptomDetail để tải thông tin chi tiết
+        loadSymptomDetail(id);
+    }
+
+    function loadSymptomDetail(id) {
+        $.ajax({
+            url: '/CheckSym/Details',
+            data: { id: id },  // Truyền tham số type và id
+            success: function (result) {
+                if (result && result.trim() !== '') {
+                    $('#data-container2').html(result); // Hiển thị kết quả nếu có dữ liệu
+                }
+                console.log(id);
+            },
+            error: function (xhr, status, error) {
+                alert("Đã xảy ra lỗi: " + error);
+            }
+        });
+    }
+</script>

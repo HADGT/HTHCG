@@ -1,0 +1,91 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<table class="table table-bordered text-white">
+    <thead>
+        <tr>
+            <th class="text-center" colspan="2">Chi tiết</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (ViewBag.Symptoms != null)
+        {
+            @foreach (var symptom in ViewBag.Symptoms)
+            {
+                <tr>
+                    <td class="text-center m-auto align-content-around">
+                        @symptom.IdSym
+                    </td>
+                    <td class="text-left m-auto align-content-around">
+                        @symptom.NameSym
+                    </td>
+                    <td class="text-center" width="16">
+                        <a type="button" class="btn" data-toggle="modal" data-target="#confirmDeleteModal" data-id="@symptom.IdSym" data-idcha="@ViewBag.idcha" onclick="removeformSym('@symptom.IdSym', '@ViewBag.idcha')">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="16"><path fill="#fff" d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" /></svg>
+                        </a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="2" class="text-center">Dữ liệu trống</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="modal" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-group">
+                    <p>
+                        Bạn có muốn xóa dữ liệu
+                        <span id="Idcharemove"></span> - <span id="Idremove"></span> không?
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Không</button>
+                <button type="button" class="btn btn-primary" id="confirmDelete">Có</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    var removeformSym = function (id, idcha) {
+        console.log(id, idcha);  // Kiểm tra giá trị đầu vào có đúng không
+        // Hiển thị modal
+        document.getElementById("confirmDeleteModal").style.display = "block";
+        // Cập nhật giá trị vào thẻ span trong modal
+        document.getElementById("Idremove").textContent = id;
+        document.getElementById("Idcharemove").textContent = idcha;
+    };
+
+    // Khi nhấn nút xác nhận xóa
+    $("#confirmDelete").click(function () {
+        var idToRemove = $("#Idremove").text();
+        var idchaToRemove = $("#Idcharemove").text();
+
+        $.ajax({
+            url: '/CheckDis/Delete', // Đường dẫn tới action xóa triệu chứng
+            type: 'POST',
+            data: {
+                id: idToRemove, // Gửi ID triệu chứng cần xóa
+                idcha: idchaToRemove
+            },
+            success: function (response) {
+                console.log(idToRemove, idchaToRemove);
+                alert("Xóa thành công");
+                location.reload();
+            },
+            error: function () {
+                alert("Error deleting symptom."); // Thông báo lỗi nếu có
+            }
+        });
+    });
+</script>

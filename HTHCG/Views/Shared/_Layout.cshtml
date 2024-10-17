@@ -24,6 +24,8 @@
                                 <li class="active"><a asp-controller="Home" asp-action="Index"><span>Trang chủ</span></a></li>
                                 <li><a asp-controller="SysController1" asp-action="ListSys"><span>Danh sách triệu chứng bệnh</span></a></li>
                                 <li><a asp-controller="DisController1" asp-action="ListDis"><span>Danh sách bệnh</span></a></li>
+                                <li><a asp-controller="CheckDis" asp-action="Index"><span>Tra cứu bệnh</span></a></li>
+                                <li><a asp-controller="CheckSym" asp-action="Index"><span>Tra cứu Triệu chứng</span></a></li>
                                 <li><a><span>Chuẩn đoán bệnh</span></a></li>
                             </ul>
                         </div>
@@ -55,11 +57,10 @@
 
         </div>
     </div>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="~/js/popper.js"></script>
     <script src="~/js/bootstrap.min.js"></script>
     <script src="~/js/main.js"></script>
-
 </body>
 </html>
 

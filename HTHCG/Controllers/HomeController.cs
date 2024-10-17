@@ -14,10 +14,5 @@ namespace HTHCG.Controllers
         {
             return View();
         }
-
-        public IActionResult Check()
-        {
-            return View();
-        }
     }
 }
