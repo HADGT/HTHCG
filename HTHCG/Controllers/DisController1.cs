@@ -9,6 +9,11 @@ namespace HTHCG.Controllers
     public class DisController1 : Controller
     {
         private readonly HthcgContext HCGctx = new HthcgContext();
+        protected void SetAlert(string message)
+        {
+            TempData["AlertMessage"] = message;
+            TempData["AlertType"] = "alert-light";
+        }
         public IActionResult ListDis()
         {
             List<Disease> diseases = HCGctx.Diseases.ToList();
@@ -23,12 +28,21 @@ namespace HTHCG.Controllers
         /// <returns></returns>
         public IActionResult DisSearch(string Name)
         {
-            var txtName = from b in HCGctx.Diseases select b;
-            if (!string.IsNullOrEmpty(Name))
+            string message = string.Empty;
+            if (Name == null)
             {
-                txtName = txtName.Where(x => x.NameDis.Contains(Name));
+                message = "Hãy nhập thông tin cần tìm kiếm!";
+                SetAlert(message);
             }
-            ViewBag.Dis = txtName.ToList();
+            else
+            {
+                var txtName = from b in HCGctx.Diseases select b;
+                if (!string.IsNullOrEmpty(Name))
+                {
+                    txtName = txtName.Where(x => x.NameDis.Contains(Name));
+                }
+                ViewBag.Dis = txtName.ToList();
+            }
             return View("ListDis");
         }
 
@@ -40,6 +54,7 @@ namespace HTHCG.Controllers
         [HttpPost]
         public IActionResult DisCreate(Disease data, string txtInput)
         {
+            string message = string.Empty;
             if (!string.IsNullOrEmpty(txtInput))
             {
                 ViewBag.Error = null;
@@ -47,20 +62,25 @@ namespace HTHCG.Controllers
                 data.NameDis = txtInput;
                 HCGctx.Diseases.Add(data);
                 HCGctx.SaveChanges();
-                return RedirectToAction(nameof(ListDis));
             }
             else
             {
-                ViewBag.Error = "< div class=\"alert alert-success\" role=\"alert\">" + "Dữ liệu thêm bị trống, hãy điền dữ liệu!" + "</div>";
-                return View();
+                message = "Hãy nhập thông tin cần tạo!";
+                SetAlert(message);
             }
+            return RedirectToAction(nameof(ListDis));
         }
 
         [HttpPost]
         public IActionResult DisRemove(string id)
         {
+            string message = string.Empty;
             Disease disease = HCGctx.Diseases.Find(id);
-            if (disease == null) return NotFound();
+            if (disease == null)
+            {
+                message = "Dữ liệu không tồn tại!";
+                SetAlert(message);
+            }
             var disNameRecords = HCGctx.SymptomsDiseases.Where(c => c.IdDis == id).ToList();
             if (disNameRecords.Any())
             {
@@ -75,8 +95,13 @@ namespace HTHCG.Controllers
         [HttpGet]
         public IActionResult DisEdit(string id)
         {
+            string message = string.Empty;
             Disease disease = HCGctx.Diseases.FirstOrDefault(c => c.IdDis == id);
-            if (disease == null) return NotFound();
+            if (disease == null)
+            {
+                message = "Dữ liệu không tồn tại!";
+                SetAlert(message);
+            }
             return Json(disease);
         }
 

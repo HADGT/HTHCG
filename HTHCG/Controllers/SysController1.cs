@@ -6,6 +6,11 @@ namespace HTHCG.Controllers
     public class SysController1 : Controller
     {
         private readonly HthcgContext HCGctx = new HthcgContext();
+        protected void SetAlert(string message)
+        {
+            TempData["AlertMessage"] = message;
+            TempData["AlertType"] = "alert-light";
+        }
         public IActionResult ListSys()
         {
             List<Symptom> symptom = HCGctx.Symptoms.ToList();
@@ -19,12 +24,21 @@ namespace HTHCG.Controllers
         /// <returns></returns>
         public IActionResult SysSearch(string Name)
         {
-            var txtName = from b in HCGctx.Symptoms select b;
-            if (!string.IsNullOrEmpty(Name))
+            string message = string.Empty;
+            if (Name == null)
             {
-                txtName = txtName.Where(x => x.NameSym.Contains(Name));
+                message = "Hãy nhập thông tin cần tìm kiếm!";
+                SetAlert(message);
             }
-            ViewBag.Sys = txtName.ToList();
+            else
+            {
+                var txtName = from b in HCGctx.Symptoms select b;
+                if (!string.IsNullOrEmpty(Name))
+                {
+                    txtName = txtName.Where(x => x.NameSym.Contains(Name));
+                }
+                ViewBag.Sys = txtName.ToList();
+            }
             return View("ListSys");
         }
 
@@ -36,25 +50,32 @@ namespace HTHCG.Controllers
         [HttpPost]
         public IActionResult SymCreate(Symptom data, string txtInput)
         {
+            string message = string.Empty;
             if (!string.IsNullOrEmpty(txtInput))
             {
                 data.IdSym = "";
                 data.NameSym = txtInput;
                 HCGctx.Symptoms.Add(data);
                 HCGctx.SaveChanges();
-                return RedirectToAction(nameof(ListSys));
             }
             else
             {
-                return RedirectToAction(nameof(ListSys));
+                message = "Hãy nhập thông tin cần tạo!";
+                SetAlert(message);
             }
+            return RedirectToAction(nameof(ListSys));
         }
 
         [HttpPost]
         public IActionResult SymRemove(string id)
         {
+            string message = string.Empty;
             Symptom symptom = HCGctx.Symptoms.Find(id);
-            if (symptom == null) return NotFound();
+            if (symptom == null)
+            {
+                message = "Dữ liệu không tồn tại!";
+                SetAlert(message);
+            }
             var symNameRecords = HCGctx.SymptomsDiseases.Where(c => c.IdSym == id).ToList();
             if (symNameRecords.Any())
             {
@@ -68,11 +89,16 @@ namespace HTHCG.Controllers
         [HttpGet]
         public IActionResult SymEdit(string id)
         {
+            string message = string.Empty;
             Symptom symptom = HCGctx.Symptoms.FirstOrDefault(c => c.IdSym == id);
-            if (symptom == null) return NotFound();
+            if (symptom == null)
+            {
+                message = "Dữ liệu không tồn tại!";
+                SetAlert(message);
+            }
             return Json(symptom);
         }
-        
+
         [HttpPost]
         public JsonResult SymEdit(string id, string name)
         {

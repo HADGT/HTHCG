@@ -1,12 +1,20 @@
-﻿using HTHCG.Models;
+﻿using Azure.Messaging;
+using HTHCG.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
+using NuGet.Protocol.Plugins;
 using System.Net;
 
 namespace HTHCG.Controllers
 {
     public class CheckSymController : Controller
     {
+        protected void SetAlert(string message)
+        {
+            TempData["AlertMessage"] = message;
+            TempData["AlertType"] = "alert-light";
+        }
         private readonly HthcgContext HCGctx = new HthcgContext();
         // GET: CheckSymController
         public ActionResult Index()
@@ -23,22 +31,34 @@ namespace HTHCG.Controllers
         /// <returns></returns>
         public IActionResult SysSearch(string Name)
         {
-            var txtName = from b in HCGctx.Symptoms select b;
-            if (!string.IsNullOrEmpty(Name))
+            string message = string.Empty;
+            if (Name == null)
             {
-                txtName = txtName.Where(x => x.NameSym.Contains(Name));
+                message = "Hãy nhập thông tin cần tìm kiếm!";
+                SetAlert(message);
             }
-            ViewBag.Sys = txtName.ToList();
+            else
+            {
+                var txtName = from b in HCGctx.Symptoms select b;
+                if (!string.IsNullOrEmpty(Name))
+                {
+                    txtName = txtName.Where(x => x.NameSym.Contains(Name));
+                }
+                ViewBag.Sys = txtName.ToList();
+            }
             return View("Index");
         }
 
         // GET: CheckSymController/Details/5
         public ActionResult Details(string id)
         {
+            string message = string.Empty;
             var symptom = HCGctx.Symptoms.Find(id);
             if (symptom == null)
             {
-                return NotFound(); // Trả về 404 nếu không tìm thấy triệu chứng
+                message = "Hãy nhập thông tin cần tìm kiếm!";
+                SetAlert(message);
+                return View("Index");
             }
             else
             {
@@ -82,8 +102,13 @@ namespace HTHCG.Controllers
         [HttpPost]
         public ActionResult Delete(string id, string idcha)
         {
+            string message = string.Empty;
             SymptomsDisease symptomsDisease = HCGctx.SymptomsDiseases.FirstOrDefault(c => c.IdDis == id && c.IdSym == idcha);
-            if (symptomsDisease == null) return NotFound();
+            if (symptomsDisease == null)
+            {
+                message = "Dữ liệu không tồn tại!";
+                SetAlert(message);
+            }
             HCGctx.SymptomsDiseases.Remove(symptomsDisease);
             HCGctx.SaveChanges();
             return RedirectToAction(nameof(Index));

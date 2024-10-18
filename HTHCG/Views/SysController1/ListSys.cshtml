@@ -4,6 +4,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <h2 class="text-white p-3">Danh sách triệu chứng bệnh</h2>
+@if (TempData["AlertMessage"] != null)
+{
+    <div id="AlertBox" class="alert @TempData["AlertType"] hide" role="alert">
+        @TempData["AlertMessage"]
+    </div>
+}
 <div class="container-fluid">
     <div class="row">
         <div class="col-4 m-auto">
@@ -171,4 +177,11 @@
             }
         });
     });
+</script>
+<script>
+    $(function () {
+        $('#AlertBox').removeClass('hide');
+        $('#AlertBox').delay(2000).slideUp(500);
+    });
+
 </script>

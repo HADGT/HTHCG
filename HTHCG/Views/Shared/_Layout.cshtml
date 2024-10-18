@@ -12,7 +12,7 @@
     <link href="~/css/style.css" rel="stylesheet" />
 
 </head>
-<body>
+<body style="overflow-y: clip;">
     <div class="page">
         <nav id="colorlib-main-nav" role="navigation">
             <div class="js-fullheight colorlib-table">
@@ -43,11 +43,11 @@
 
             <section class="hero-wrap js-fullheight">
                 <div class="container px-0">
-                    <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center" data-scrollax-parent="true">
+                    <div class="row no-gutters slider-text js-fullheight p-5 justify-content-center" data-scrollax-parent="true">
                         <div class="col-md-12 ftco-animate text-center">
                             <div class="desc">
                                 <main role="main" class="pb-3">
-                                    @RenderBody()
+                                    @RenderBody();
                                 </main>
                             </div>
                         </div>
