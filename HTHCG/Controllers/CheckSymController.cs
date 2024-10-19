@@ -78,25 +78,81 @@ namespace HTHCG.Controllers
             return PartialView("Details", ViewBag.Diseases + ViewBag.idcha);
         }
 
-        // GET: CheckSymController/Create
-        public ActionResult Create()
+        public ActionResult Create(string id)
         {
-            return View();
-        }
+            string message = string.Empty;
+            var symptom = HCGctx.Symptoms.Find(id);
 
-        // POST: CheckSymController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
+            if (symptom == null)
             {
-                return RedirectToAction(nameof(Index));
+                message = "Dữ liệu không tồn tại!";
+                SetAlert(message);
+                return View("Index");
             }
-            catch
+            else
             {
+                var diseaseDetails = HCGctx.SymptomsDiseases
+                    .Where(sd => sd.IdSym == id)
+                    .Select(sd => sd.IdDis)
+                    .ToList();
+
+                var listnoDisease = HCGctx.Diseases
+                    .Where(d => !diseaseDetails.Contains(d.IdDis))
+                    .ToList();
+
+                ViewBag.Diseases = listnoDisease;
+                ViewBag.IdCha = id; // Truyền ID bệnh cha
+                ViewBag.Name = symptom.NameSym;
                 return View();
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="symptomName"></param>
+        /// <param name="diseaseIdd"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult Create(string symptomName, string[] diseaseIdd)
+        {
+            string message = string.Empty;
+            // In ra để kiểm tra giá trị của diseaseName
+            Console.WriteLine("diseaseName: " + symptomName);
+            // Lấy bệnh dựa trên tên
+            var symptom = HCGctx.Symptoms.FirstOrDefault(d => d.NameSym == symptomName);
+            if (symptom == null)
+            {
+                message = "Dữ liệu không tồn tại!";
+                SetAlert(message);
+            }
+            else
+            {
+                if (diseaseIdd != null && diseaseIdd.Length > 0)
+                {
+                    foreach (var id in diseaseIdd)
+                    {
+                        var existingDiseases = HCGctx.SymptomsDiseases
+                            .FirstOrDefault(ds => ds.IdSym == symptom.IdSym && ds.IdDis == id);
+
+                        if (existingDiseases == null)
+                        {
+                            // Nếu chưa, thêm triệu chứng vào bệnh
+                            var diseaseSymptom = new SymptomsDisease
+                            {
+                                IdDis = id,
+                                IdSym = symptom.IdSym
+                            };
+                            HCGctx.SymptomsDiseases.Add(diseaseSymptom);
+                        }
+                        Console.WriteLine($"Bệnh đã chọn: {id}");
+                    }
+
+                    // Lưu thay đổi vào cơ sở dữ liệu
+                    HCGctx.SaveChanges();
+                }
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]

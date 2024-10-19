@@ -6,7 +6,6 @@
     <thead>
         <tr>
             <th class="text-center" colspan="2">Chi tiết</th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -15,9 +14,6 @@
             foreach (var disease in ViewBag.Diseases)
             {
                 <tr>
-                    <td class="text-center m-auto align-content-around">
-                        @disease.IdDis
-                    </td>
                     <td class="text-left m-auto align-content-around">
                         @disease.NameDis
                     </td>

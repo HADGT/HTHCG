@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<form method="post" asp-controller="CheckSym" asp-action="Create">
+    <h2 class="text-white">Các bệnh có thể thêm trong @ViewBag.Name</h2>
+    <input type="hidden" name="symptomName" value="@ViewBag.Name" />
+    @if (TempData["AlertMessage"] != null)
+    {
+        <div id="AlertBox" class="alert @TempData["AlertType"] hide" role="alert">
+            @TempData["AlertMessage"]
+        </div>
+    }
+    <div class="row">
+        <div class="pt-3 col-6 alert-heading text-monospace text-left" style="max-height: calc(100vh - 150px); overflow-y: auto;">
+            <table class="table table-bordered text-white">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th class=" text-center">Bệnh</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ViewBag.Diseases != null)
+                    {
+                        @foreach (var item in ViewBag.Diseases)
+                        {
+                            <tr>
+                                <td class="text-center" style="width: 5rem">
+                                    <div class="m-auto" style="align-items: center; justify-content: center;">
+                                        <input class="form-check-input" type="checkbox" name="diseaseIdd" value="@item.IdDis" style="margin-right: 5px;">
+                                    </div>
+                                </td>
+                                <td>
+                                    @item.NameDis
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="2" class="text-center">Dữ liệu trống</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="pt-3 col-6 alert-heading text-monospace text-left m-auto" style="max-height: calc(100vh - 150px); overflow-y: auto;">
+            <button class="pb-5 pt-5 btn btn-outline-light w-100" type="submit">Lưu</button>
+            <div class="pb-5 pt-5"></div>
+            <button class="pb-5 pt-5 btn btn-outline-light w-100" type="submit" asp-controller="CheckSym" asp-action="Index">Quay lại</button>
+        </div>
+    </div>
+</form>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(function () {
+        $('#AlertBox').removeClass('hide');
+        $('#AlertBox').delay(2000).slideUp(500);
+    });
+</script>

@@ -134,7 +134,7 @@ namespace HTHCG.Controllers
                     {
                         // Kiểm tra nếu triệu chứng đã được gán cho bệnh này chưa
                         var existingSymptom = HCGctx.SymptomsDiseases
-                            .FirstOrDefault(ds => ds.IdDis == diseaseName && ds.IdSym == id);
+                            .FirstOrDefault(ds => ds.IdDis == disease.IdDis && ds.IdSym == id);
 
                         if (existingSymptom == null)
                         {
