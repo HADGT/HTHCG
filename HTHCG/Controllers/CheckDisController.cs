@@ -1,5 +1,4 @@
 ﻿using HTHCG.Models;
-using HTHCG.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

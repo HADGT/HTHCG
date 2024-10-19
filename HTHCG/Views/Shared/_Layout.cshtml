@@ -26,7 +26,7 @@
                                 <li><a asp-controller="DisController1" asp-action="ListDis"><span>Danh sách bệnh</span></a></li>
                                 <li><a asp-controller="CheckDis" asp-action="Index"><span>Tra cứu bệnh</span></a></li>
                                 <li><a asp-controller="CheckSym" asp-action="Index"><span>Tra cứu Triệu chứng</span></a></li>
-                                <li><a><span>Chuẩn đoán bệnh</span></a></li>
+                                <li><a asp-controller="Diagnosis" asp-action="Index"><span>Chuẩn đoán bệnh</span></a></li>
                             </ul>
                         </div>
                     </div>
@@ -43,18 +43,15 @@
 
             <section class="hero-wrap js-fullheight">
                 <div class="container px-0">
-                    <div class="row no-gutters slider-text js-fullheight p-5 justify-content-center" data-scrollax-parent="true">
+                    <div class="row no-gutters slider-text js-fullheight pt-5 justify-content-center" data-scrollax-parent="true">
                         <div class="col-md-12 ftco-animate text-center">
-                            <div class="desc">
-                                <main role="main" class="pb-3">
-                                    @RenderBody();
+                                <main role="main">
+                                    @RenderBody()
                                 </main>
-                            </div>
                         </div>
                     </div>
                 </div>
             </section>
-
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
