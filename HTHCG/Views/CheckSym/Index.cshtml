@@ -13,25 +13,22 @@
         @TempData["AlertMessage"]
     </div>
 }
-<div class="col-12 p-0 d-flex">
-    <div class="d-flex col-6 p-0">
+<div class="col-12 p-0">
+    <div class="d-flex col-lg-6 col-md-12 col-sm-12 p-0">
         <ul class="nav nav-tabs">
             <li><a class="text-white" type="button" asp-controller="CheckSym" asp-action="Index">Triệu chứng</a></li>
             <li><a class="text-white" type="button" asp-controller="CheckDis" asp-action="Index">Bệnh</a></li>
         </ul>
     </div>
-    <div class="col-6 d-flex justify-content-end align-items-center p-0">
+    <div class="pt-sm-3 pb-sm-3 col-lg-6 col-md-12 col-sm-12 d-flex justify-content-end align-items-center p-0">
         <form class="d-flex" asp-action="SysSearch" asp-controller="CheckSym" method="get">
             <input class="form-control" type="search" name="Name" placeholder="Tìm kiếm tên" aria-label="Search">
             <button class="btn btn-outline-light m-auto" type="submit">Tìm kiếm</button>
         </form>
-        <form>
-            <button type="button" class="btn btn-outline-light m-auto" data-toggle="modal" data-target="#confirmCreateModal" onclick="">Tạo mới</button>
-        </form>
     </div>
 </div>
 <div class="row">
-    <div id="data-container1" class="pt-3 col-6 alert-heading text-monospace text-left" style="max-height: calc(100vh - 150px); overflow-y: auto;">
+    <div id="data-container1" class="pt-3 col-lg-6 col-md-12 col-sm-12 alert-heading text-monospace text-left border-bottom" style="max-height: calc(100vh - 150px); overflow-y: auto;">
         <table class="table table-bordered text-white">
             <thead>
                 <tr>
@@ -71,7 +68,7 @@
             </tbody>
         </table>
     </div>
-    <div id="data-container2" class="pt-3 col-6 alert-heading text-monospace text-left" style="max-height: calc(100vh - 150px); overflow-y: auto;">
+    <div id="data-container2" class="pt-3 pt-sm-5 col-lg-6 col-md-12 col-sm-12 alert-heading text-monospace text-left border-bottom" style="max-height: calc(100vh - 150px); overflow-y: auto;">
         @Html.Partial("Details", ViewData)
     </div>
 </div>
