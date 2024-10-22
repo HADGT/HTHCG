@@ -26,7 +26,6 @@ namespace HTHCG.Controllers
                                     .ThenInclude(sd => sd.IdSymNavigation)       // Liên kết với bảng Symptoms thông qua IdSymNavigation
                                     .ToList();
             var matchedDiseases = new List<dynamic>(); // Danh sách chứa thông tin bệnh đã khớp
-            var fullMatchDiseases = new List<string>(); // Danh sách bệnh khớp 100%
             foreach (var disease in possibleDiseases)
             {
                 // Đếm số triệu chứng khớp
@@ -44,20 +43,21 @@ namespace HTHCG.Controllers
                                         .Select(sd => sd.IdSymNavigation.NameSym) // Lấy tên triệu chứng từ bảng Symptoms thông qua IdSymNavigation
                                         .ToList();
 
+                    // Lấy triệu chứng khớp
+                    var matchedSymptoms = disease.SymptomsDiseases
+                                             .Where(sd => selectedSymptoms.Contains(sd.IdSym))
+                                             .Select(sd => sd.IdSymNavigation.NameSym) // Lấy tên triệu chứng khớp
+                                             .ToList();
+
                     // Thêm thông tin bệnh vào danh sách
                     matchedDiseases.Add(new
                     {
                         DiseaseName = disease.NameDis,
                         MatchingCount = matchingCount,
                         MatchScore = matchScore,
-                        MissingSymptoms = missingSymptoms // Thêm triệu chứng thiếu
+                        MissingSymptoms = missingSymptoms, // Thêm triệu chứng thiếu
+                        MatchedSymptoms = matchedSymptoms // Thêm triệu chứng khớp
                     });
-
-                    // Kiểm tra nếu tỷ lệ khớp là 100%
-                    if (matchScore == 100)
-                    {
-                        fullMatchDiseases.Add(disease.NameDis);
-                    }
                 }
             }
 
@@ -66,8 +66,7 @@ namespace HTHCG.Controllers
 
             // Truyền dữ liệu vào ViewBag
             ViewBag.MatchedDiseases = matchedDiseases; // Danh sách bệnh khả thi
-            ViewBag.FullMatchDiseases = fullMatchDiseases; // Danh sách bệnh khớp 100%
-            return View("Index");
+            return View();
         }
     }
 }
