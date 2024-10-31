@@ -3,12 +3,30 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <style>
+    section.hero-wrap.js-fullheight {
+        overflow-y: auto;
+    }
+
     ul.KL {
+        list-style: none;
         text-align: justify;
     }
+    /* Đảm bảo rằng div kết quả có chiều cao phù hợp */
+    .Sym-container {
+        background-color: rgba(255, 255, 255, 0.1); /* Màu nền để dễ nhìn */
+        padding: 20px; /* Thêm padding cho đẹp */
+        border-radius: 10px; /* Bo góc cho div */
+        margin-top: -120px;
+        height: 160px;
+        overflow-y: auto;
+    }
+
+    .diagnosis-container {
+        overflow-y: auto; /* Cho phép cuộn nếu nội dung vượt quá chiều cao */
+    }
 </style>
-<div class="row">
-    <div class="col-6">
+<div class="container m-auto">
+    <div class="col-lg-8 col-md-12 col-sm-12 m-auto border-bottom pb-4">
         <h3 class="text-white">Chọn triệu chứng bạn đang gặp phải</h3>
         <div class="diagnosis-container">
             <form method="post" asp-controller="Diagnosis" asp-action="Result">
@@ -48,60 +66,69 @@
             </form>
         </div>
     </div>
-    <div class="col-6">
-        <h3 class="text-white">Các triệu chứng bạn chọn</h3>
-        <div class="Sym-container p-3 m-auto alert-heading text-monospace text-left text-white" style="max-height: calc(100vh - 150px); overflow-y: auto; background-color: rgba(255, 255, 255, 0.1);">
-            <ul id="selected-symptoms-list" class="KL text-justify text-white"></ul>
-            <div id="no-symptom-text" class="text-white-50">Chưa có triệu chứng nào được chọn</div>
+    <div class="col-12 m-auto pt-3">
+        <h3 class="text-white">Kết quả chuẩn đoán</h3>
+        <div id="resultContainer" class="result-container">
+            @Html.Partial("View")
         </div>
     </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const checkboxes = document.querySelectorAll('.symptom-checkbox');
-        const selectedSymptomsList = document.getElementById('selected-symptoms-list');
-        const noSymptomText = document.getElementById('no-symptom-text');
+    $(document).ready(function () {
+        // Khôi phục trạng thái checkbox từ localStorage khi tải trang
+        restoreSelectedSymptoms();
 
-        // Kiểm tra xem các phần tử có tồn tại trước khi thao tác
-        if (selectedSymptomsList && noSymptomText) {
-            checkboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', function () {
-                    updateSelectedSymptoms();
-                });
-            });
-
-            function updateSelectedSymptoms() {
-                // Xóa danh sách hiện tại
-                selectedSymptomsList.innerHTML = '';
-                let selectedCount = 0;
-
-                // Lặp qua tất cả các checkbox và lấy triệu chứng đã chọn
-                checkboxes.forEach(checkbox => {
-                    if (checkbox.checked) {
-                        const symptomName = checkbox.getAttribute('data-symptom');
-                        const listItem = document.createElement('li');
-                        listItem.textContent = symptomName;
-                        selectedSymptomsList.appendChild(listItem);
-                        selectedCount++;
-                    }
-                });
-
-                // Hiển thị hoặc ẩn thông báo "Chưa có triệu chứng nào được chọn"
-                if (selectedCount > 0) {
-                    // Khi có triệu chứng được chọn, hiển thị danh sách và ẩn thông báo
-                    selectedSymptomsList.classList.remove('d-none');
-                    noSymptomText.classList.add('d-none');
-                } else {
-                    // Khi không có triệu chứng nào được chọn, ẩn danh sách và hiển thị thông báo
-                    selectedSymptomsList.classList.add('d-none');
-                    noSymptomText.classList.remove('d-none');
-                }
-
-            }
-        } else {
-            console.error("Phần tử với ID 'selected-symptoms-list' hoặc 'no-symptom-text' không tồn tại.");
-        }
+        // Khi có sự thay đổi trên các checkbox, lưu lại trạng thái vào localStorage
+        $('input[name="SelectedSymptoms"]').change(function () {
+            saveSelectedSymptoms();
+        });
     });
+
+    // Hàm lưu các triệu chứng đã chọn vào localStorage
+    function saveSelectedSymptoms() {
+        const selectedSymptoms = $('input[name="SelectedSymptoms"]:checked').map(function () {
+            return $(this).val();
+        }).get();
+        localStorage.setItem("selectedSymptoms", JSON.stringify(selectedSymptoms));
+    }
+
+    // Hàm khôi phục trạng thái của checkbox từ localStorage
+    function restoreSelectedSymptoms() {
+        const storedSymptoms = JSON.parse(localStorage.getItem("selectedSymptoms") || "[]");
+        $('input[name="SelectedSymptoms"]').each(function () {
+            if (storedSymptoms.includes($(this).val())) {
+                $(this).prop("checked", true);
+            }
+        });
+    }
+
+    function redirectToView() {
+        loadSymptomDetail();
+    }
+    function loadSymptomDetail() {
+        // Lấy danh sách các triệu chứng đã chọn
+        const selectedSymptoms = $('input[name="SelectedSymptoms"]:checked').map(function () {
+            return $(this).val();
+        }).get();
+        // Gửi yêu cầu AJAX
+        $.ajax({
+            url: '/Diagnosis/Result',
+            type: 'POST',
+            data: { selectedSymptoms: selectedSymptoms },  // Truyền danh sách triệu chứng đã chọn
+            success: function (result) {
+                $('#resultContainer').html(result); // Cập nhật kết quả vào container
+            },
+            error: function (xhr, status, error) {
+                alert("Đã xảy ra lỗi: " + error);
+            }
+        });
+    }
+</script>
+
+<script>
+    function clearSelectedSymptoms() {
+        localStorage.removeItem("selectedSymptoms"); // Xóa các triệu chứng đã chọn trong localStorage
+    }
 </script>

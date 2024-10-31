@@ -2,6 +2,7 @@
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
+<h3 class="text-white">Danh sách kết quả chuẩn đoán</h3>
 <div id="resultContainer" class="pt-3 m-auto alert-heading text-monospace text-left" style="max-height: calc(100vh - 150px); overflow-y: auto;">
     <table class="table table-bordered text-white">
         <thead>
@@ -10,9 +11,10 @@
                 <th class="col-1 align-content-center text-center">Số triệu chứng khớp</th>
                 <th class="col-1 align-content-center text-center">Tỷ lệ khớp (%)</th>
                 <th class="col-4 align-content-center text-center">Triệu chứng thiếu</th>
+                <th class="col-4 align-content-center text-center">Triệu chứng khớp</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody style="max-height: calc(100vh - 150px); overflow-y: auto;">
             @if (ViewBag.MatchedDiseases != null && ViewBag.MatchedDiseases.Count > 0)
             {
                 foreach (var disease in ViewBag.MatchedDiseases)
@@ -36,6 +38,21 @@
                                 <span>Không có triệu chứng thiếu</span>
                             }
                         </td>
+                        <td class="align-content-center text-justify">
+                            @if (disease.MatchedSymptoms != null)
+                            {
+                                <ul style="padding: 10px;">
+                                    @foreach (var symptom in disease.MatchedSymptoms)
+                                    {
+                                        <li>@symptom</li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <span>Không có triệu chứng khớp</span>
+                            }
+                        </td>
                     </tr>
                 }
             }
@@ -48,3 +65,5 @@
         </tbody>
     </table>
 </div>
+<a type="button" class="btn btn-outline-light w-100" asp-controller="Diagnosis" asp-action="Index" onclick="clearSelectedSymptoms()">Tải lại trang</a>
+

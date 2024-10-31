@@ -66,7 +66,7 @@ namespace HTHCG.Controllers
 
             // Truyền dữ liệu vào ViewBag
             ViewBag.MatchedDiseases = matchedDiseases; // Danh sách bệnh khả thi
-            return View();
+            return View("Index");
         }
     }
 }
