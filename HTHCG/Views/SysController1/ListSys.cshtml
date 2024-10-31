@@ -12,7 +12,20 @@
 }
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-8 col-md-8 col-sm-12 alert-heading text-monospace text-left border-bottom" style="max-height: calc(100vh - 150px); overflow-y: auto;">
+        <div class="col-4 m-auto">
+            <form class="pb-5 pt-5" asp-action="SysSearch" asp-controller="SysController1" method="get">
+                <input class="form-control me-2 pt-4 pb-4 mb-3" type="search" name="Name" placeholder="Tìm kiếm tên" aria-label="Search">
+                <button class="btn btn-outline-light w-100" type="submit">Tìm kiếm</button>
+            </form>
+            <form class="pb-5 pt-5" asp-action="SymCreate" asp-controller="SysController1" method="post">
+                <input class="form-control me-2 pt-4 pb-4 mb-3" name="txtInput" type="text" placeholder="Thông tin tạo thêm" aria-label="Input">
+                <button class="btn btn-outline-light w-100" type="submit">Tạo mới</button>
+            </form>
+            <form class="pb-5 pt-5" asp-action="ListSys" asp-controller="SysController1">
+                <button class="btn btn-outline-light w-100" type="submit">Tải lại danh sách</button>
+            </form>
+        </div>
+        <div class="col-8 alert-heading text-monospace text-left" style="max-height: calc(100vh - 150px); overflow-y: auto;">
             <table class="table table-bordered text-white">
                 <thead>
                     <tr>
@@ -41,19 +54,6 @@
                     }
                 </tbody>
             </table>
-        </div>
-        <div class="pt-sm-5 col-lg-4 col-md-4 col-sm-12 m-auto">
-            <form class="pb-5 pt-5" asp-action="SysSearch" asp-controller="SysController1" method="get">
-                <input class="form-control me-2 pt-4 pb-4 mb-3" type="search" name="Name" placeholder="Tìm kiếm tên" aria-label="Search">
-                <button class="btn btn-outline-light w-100" type="submit">Tìm kiếm</button>
-            </form>
-            <form class="pb-5 pt-5" asp-action="SymCreate" asp-controller="SysController1" method="post">
-                <input class="form-control me-2 pt-4 pb-4 mb-3" name="txtInput" type="text" placeholder="Thông tin tạo thêm" aria-label="Input">
-                <button class="btn btn-outline-light w-100" type="submit">Tạo mới</button>
-            </form>
-            <form class="pb-5 pt-5" asp-action="ListSys" asp-controller="SysController1">
-                <button class="btn btn-outline-light w-100" type="submit">Tải lại danh sách</button>
-            </form>
         </div>
     </div>
 </div>
