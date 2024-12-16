@@ -1,10 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="wwwroot\webbuilder19x64\**" />
+    <Content Remove="wwwroot\webbuilder19x64\**" />
+    <EmbeddedResource Remove="wwwroot\webbuilder19x64\**" />
+    <None Remove="wwwroot\webbuilder19x64\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Include="wwwroot\css\bootstrap\.DS_Store" />
@@ -15,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8">
@@ -22,6 +30,29 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.6" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.9.0" />
+    <PackageReference Include="System.Runtime.WindowsRuntime.UI.Xaml" Version="4.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="CKEditor.NET">
+      <HintPath>wwwroot\scripts\Ckdll\CKEditor.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="CKFinder">
+      <HintPath>wwwroot\scripts\Ckdll\CKFinder.dll</HintPath>
+    </Reference>
+    <Reference Include="CKFinder_FileEditor">
+      <HintPath>wwwroot\scripts\Ckdll\CKFinder_FileEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="CKFinder_ImageResize">
+      <HintPath>wwwroot\scripts\Ckdll\CKFinder_ImageResize.dll</HintPath>
+    </Reference>
+    <Reference Include="CKFinder_Watermark">
+      <HintPath>wwwroot\scripts\Ckdll\CKFinder_Watermark.dll</HintPath>
+    </Reference>
+    <Reference Include="FredCK.FCKeditorV2">
+      <HintPath>wwwroot\scripts\Ckdll\FredCK.FCKeditorV2.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
